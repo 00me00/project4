@@ -1,10 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTask } from './context/CardContext'
 import ShowTask from './ShowTask'
 
 const AddTask = () => {
-    const {taskList,addTask}=useTask()
+    const {taskList,addTask,task}=useTask()
     const[inputTask,setInputTask]=useState('')
+
+    // useEffect(()=>{
+    //     console.log(task)
+    //     if (task && task.id){
+    //         setInputTask(task.task)
+           
+    //     }
+    // },[task])
     const handleSubmit=(e)=>{
         e.preventDefault()
         if (inputTask.trim()==='')return
@@ -16,7 +24,8 @@ const AddTask = () => {
         addTask(newTask)
         setInputTask("")
     }
-    console.log(taskList)
+    console.log(task);
+
 
   return (
     <div>
@@ -27,11 +36,27 @@ const AddTask = () => {
             </div>
 
         </form>
-        {
-            taskList.map((task)=>(
-                <ShowTask key={task.id} task={task}/>
+
+        <table className="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">TaskName</th>
+      <th scope="col">Action</th>
+    
+    </tr>
+  </thead>
+  <tbody>
+  {
+            taskList.map((task,idx)=>(
+                <ShowTask key={idx} idx={idx} task={task}/>
             ))
         }
+  
+  </tbody>
+</table>
+
+       
     </div>
   )
 }

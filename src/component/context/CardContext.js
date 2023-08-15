@@ -3,7 +3,7 @@ import { taskReducer } from "../reducer/cardReducer";
 
 const initialState={
     taskList:[],
-    // task
+     task:{}
 }
 const TaskContext=createContext(initialState)
 export const TaskProvider=({children})=>{
@@ -17,11 +17,45 @@ export const TaskProvider=({children})=>{
             }
         })
     }
+    const removeTask=(task)=>{
+        console.log("del",task)
+        const updatedTask=state.taskList.filter(remove=>remove.id!==task.id)
+        dispatch({
+            type:"REMOVE_TASK",
+            payload:{
+                tasks:updatedTask
+            }
+        })
+    }
+    const editTask=(id)=>{
+        const updatedTask=state.taskList.find(current=>current.id===id)
+        console.log("ll",updatedTask)
+        dispatch({
+            type:"EDIT_TASK",
+            payload:{
+                task:updatedTask
+            }
+        })
+    }
+    const updateTask=(id,task)=>{
+        const updatedTask=state.taskList.map((current)=>(
+            current.id===id?{id:task.id,task:task.task}:current
+        ))
+        dispatch({
+            type:"UPDATE_TASK",
+            payload:{
+                tasks:updatedTask
+            }
+        })
+    }
 
 
     const value={
         taskList:state.taskList,
-        addTask
+        addTask,
+        removeTask,
+        editTask,
+        updateTask
     }
 
     return (
